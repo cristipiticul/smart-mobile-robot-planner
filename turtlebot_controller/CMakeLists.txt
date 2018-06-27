@@ -12,17 +12,16 @@ find_package(catkin REQUIRED COMPONENTS
 ## http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html
 catkin_python_setup()
 
-#add_action_files(
-#  FILES
-#    Action1.action
-#    Action2.action
-#)
-#
+add_action_files(
+  FILES
+    TurtleBotMovement.action
+)
+
 ## Generate added messages and services with any dependencies listed here
-#generate_messages(
-#  DEPENDENCIES
-#    geometry_msgs
-#)
+generate_messages(
+  DEPENDENCIES
+    geometry_msgs actionlib_msgs
+)
 
 catkin_package(
 #  INCLUDE_DIRS include

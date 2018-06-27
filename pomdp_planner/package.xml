@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>pomdp_planner</name>
+  <version>0.0.0</version>
+  <description>The pomdp_planner package</description>
+
+  <maintainer email="cristipiticul@gmail.com">Cristian Militaru</maintainer>
+
+  <license>TODO</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <export>
+  </export>
+</package>

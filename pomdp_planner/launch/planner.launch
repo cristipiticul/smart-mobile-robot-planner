@@ -1,0 +1,11 @@
+<launch>
+  <arg name="cell_size" default="0.2"/>
+
+  <node name="pomdp_planner" pkg="pomdp_planner"
+    type="start.sh" output="screen"/>
+
+  <node name="turtlebot_controller" pkg="turtlebot_controller"
+    type="controller_node" output="screen">
+    <param name="cell_size" value="$(arg cell_size)" />
+  </node>
+</launch>
