@@ -1,5 +1,6 @@
 <launch>
-  <arg name="cell_size" default="0.2"/>
+  <!-- cell_size equal to robot diameter -->
+  <arg name="cell_size" default="0.35"/>
 
   <node name="pomdp_planner" pkg="pomdp_planner"
     type="start.sh" output="screen"/>
