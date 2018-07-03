@@ -9,6 +9,7 @@ using RobotOS
 rostypegen()
 import geometry_msgs.msg: Twist
 import turtlebot_controller.msg: TurtleBotMovementActionGoal, TurtleBotMovementActionResult
+using Dates # for time-out checks
 
 ROBOT_VELOCITY = 1.0
 ROBOT_ANGULAR_VELOCITY = 1.5707
@@ -43,7 +44,7 @@ action_client = TurtleBotActionClient("turtlebot_controller")
 
 function sendGoal(action_client::TurtleBotActionClient, goal::Symbol)
     if action_client.status.status != :idle
-        print("turtlebot_communication.jl: Shouldn't send goal, action not idle")
+        println("turtlebot_communication.jl: Shouldn't send goal, action not idle")
     end
     action_goal = TurtleBotMovementActionGoal()
     action_goal.goal.command = string(goal)
@@ -52,11 +53,21 @@ function sendGoal(action_client::TurtleBotActionClient, goal::Symbol)
 end
 
 POLL_RATE = Rate(10.0)
+TIMEOUT = Dates.Millisecond(1000) # 1 second
 function waitForResult(action_client::TurtleBotActionClient)
+    start_time = Dates.now()
+    timeout = false
     while action_client.status.status != :done
+        if Dates.now() - start_time >= TIMEOUT
+            timeout = true
+            break
+        end
         rossleep(POLL_RATE)
     end
     action_client.status.status = :idle
+    if timeout
+        return false
+    end
     return action_client.status.last_status
 end
 

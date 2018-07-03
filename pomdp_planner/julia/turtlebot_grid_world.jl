@@ -101,7 +101,7 @@ function POMDPs.states(mdp::GridWorld)
     return s
 end
 
-POMDPs.actions(mdp::GridWorld) = [:forward, :rotate_clockwise, :rotate_counterclockwise]
+POMDPs.actions(mdp::GridWorld) = [:forward, :rotate_clockwise, :rotate_counterclockwise, :wait]
 
 function POMDPs.transition(mdp::GridWorld, state::GridWorldState, action::Symbol)
     if state.done
@@ -121,6 +121,8 @@ function POMDPs.transition(mdp::GridWorld, state::GridWorldState, action::Symbol
         if inbounds(mdp, new_position)
             next_position = new_position
         end
+    elseif action == :wait
+        # do nothing, they are already initialized
     else
         println("Error! Unrecognized action: $action")
     end
@@ -165,6 +167,8 @@ function POMDPs.action_index(mdp::GridWorld, act::Symbol)
         return 2
     elseif act==:rotate_counterclockwise
         return 3
+    elseif act==:wait
+        return 4
     end
     error("Invalid GridWorld action: $act")
 end
@@ -198,7 +202,10 @@ start_state = GridWorldState(9, 4, :north)
 sim(mdp, start_state, max_steps=10) do s
     println("State: $s")
     a = action(policy, s)
-    println("Action: $a\n")
-    actionToRobotFunction(a)()
+    println("Action: $a")
+    if !robotDoAction(a)
+        println("Robot failed to do action: $a")
+        return :wait
+    end
     return a
 end
