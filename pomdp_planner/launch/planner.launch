@@ -2,9 +2,14 @@
   <!-- cell_size equal to robot diameter -->
   <arg name="cell_size" default="0.35"/>
 
+  <!-- TurtleBot Gazebo -->
+  <include file="$(find turtlebot_gazebo_room)/launch/turtlebot_gazebo.launch"/>
+
+  <!-- POMDP -->
   <node name="pomdp_planner" pkg="pomdp_planner"
     type="start.sh" output="screen"/>
 
+  <!-- TurtleBot Controller -->
   <node name="turtlebot_controller" pkg="turtlebot_controller"
     type="controller_node" output="screen">
     <param name="cell_size" value="$(arg cell_size)" />

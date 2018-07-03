@@ -1,0 +1,10 @@
+<launch>
+  <node name="left_wall_spawner" pkg="gazebo_ros" type="spawn_model"
+    args="-file $(find interactive_local_planner)/models/wall/model.sdf -sdf -x 3.1 -y 0   -z 1 -Y 0       -model left_wall" />
+  <node name="front_wall_spawner" pkg="gazebo_ros" type="spawn_model"
+    args="-file $(find interactive_local_planner)/models/wall/model.sdf -sdf -x 6.2 -y 3.1 -z 1 -Y 1.5707  -model front_wall" />
+  <node name="right_wall_spawner" pkg="gazebo_ros" type="spawn_model"
+    args="-file $(find interactive_local_planner)/models/wall/model.sdf -sdf -x 3.1 -y 6.2 -z 1 -Y 3.1415  -model right_wall" />
+  <node name="back_wall_spawner" pkg="gazebo_ros" type="spawn_model"
+    args="-file $(find interactive_local_planner)/models/wall/model.sdf -sdf -x 0   -y 3.1 -z 1 -Y -1.5707 -model back_wall" />
+</launch>

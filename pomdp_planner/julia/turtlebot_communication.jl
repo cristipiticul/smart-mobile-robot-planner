@@ -11,10 +11,15 @@ import geometry_msgs.msg: Twist
 import turtlebot_controller.msg: TurtleBotMovementActionGoal, TurtleBotMovementActionResult
 using Dates # for time-out checks
 
-ROBOT_VELOCITY = 1.0
-ROBOT_ANGULAR_VELOCITY = 1.5707
-
 init_node("pomdp_planner")
+
+POLL_RATE = Rate(10.0)
+TIMEOUT = Dates.Millisecond(3000)
+
+while get_param("turtlebot_controller_action_server_ready", false) != true
+    println("turtlebot_communication: Waiting for turtlebot_controller")
+    rossleep(Duration(1.0))
+end
 
 mutable struct ActionStatus
     last_status::Bool # True if the last action was successfully completed
@@ -52,8 +57,6 @@ function sendGoal(action_client::TurtleBotActionClient, goal::Symbol)
     #should call rossleep after (see waitForResult)
 end
 
-POLL_RATE = Rate(10.0)
-TIMEOUT = Dates.Millisecond(1000) # 1 second
 function waitForResult(action_client::TurtleBotActionClient)
     start_time = Dates.now()
     timeout = false

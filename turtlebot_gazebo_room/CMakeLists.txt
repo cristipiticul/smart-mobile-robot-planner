@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(interactive_local_planner_simulated_obstacle)
+project(turtlebot_gazebo_room)
 
 find_package(catkin REQUIRED COMPONENTS
   gazebo_ros
@@ -24,4 +24,3 @@ catkin_install_python(
   PROGRAMS nodes/obstacle_controller.py
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )
-

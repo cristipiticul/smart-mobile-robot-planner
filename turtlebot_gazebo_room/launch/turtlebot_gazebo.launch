@@ -1,0 +1,5 @@
+<launch>
+  <include file="$(find gazebo_ros)/launch/empty_world.launch"/>
+  <include file="$(find turtlebot_gazebo_room)/launch/spawn_room.launch"/>
+  <node name="turtlebot_spawner_script" pkg="turtlebot_gazebo_room" type="turtlebot_spawner.sh"/>
+</launch>

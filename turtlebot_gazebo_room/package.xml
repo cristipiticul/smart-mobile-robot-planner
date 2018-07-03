@@ -1,8 +1,8 @@
 <?xml version="1.0"?>
 <package format="2">
-  <name>interactive_local_planner_simulated_obstacle</name>
+  <name>turtlebot_gazebo_room</name>
   <version>0.0.0</version>
-  <description>The interactive_local_planner_simulated_obstacle package</description>
+  <description>The turtlebot_gazebo_room package</description>
 
   <maintainer email="cristipiticul@yahoo.com">Cristian Militaru</maintainer>
 
