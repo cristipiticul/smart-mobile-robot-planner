@@ -3,6 +3,7 @@ importall POMDPs
 using Distributions
 using POMDPToolbox
 include("turtlebot_communication.jl")
+resetGazeboWorld()
 
 # =================================
 # (PO)MDP structures
@@ -133,7 +134,7 @@ function POMDPs.reward(mdp::GridWorld, state::GridWorldState, action::Symbol, st
     if state.done
         return 0.0
     end
-    r = 0.0
+    r = -1.0
     n = length(mdp.reward_states)
     for i = 1:n
         if posequal(state.position, mdp.reward_states[i])
@@ -188,7 +189,7 @@ mdp = GridWorld()
 # exploration constant: this is how much weight to put into exploratory actions.
 # A good rule of thumb is to set the exploration constant to what you expect the upper bound on your average expected reward to be.
 solver = MCTSSolver(n_iterations=1000,
-                    depth=20,
+                    depth=30,
                     exploration_constant=10.0,
                     enable_tree_vis=true)
 
@@ -197,9 +198,9 @@ policy = solve(solver, mdp)
 # =================================
 # Test the policy
 # =================================
-start_state = GridWorldState(9, 4, :north)
+start_state = GridWorldState(3, 6, :south)
 
-sim(mdp, start_state, max_steps=10) do s
+sim(mdp, start_state, max_steps=20) do s
     println("State: $s")
     a = action(policy, s)
     println("Action: $a")

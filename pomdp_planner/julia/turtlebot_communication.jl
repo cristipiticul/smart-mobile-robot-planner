@@ -6,9 +6,11 @@ using RobotOS
 @rosimport turtlebot_controller.msg.TurtleBotMovementAction
 @rosimport turtlebot_controller.msg.TurtleBotMovementActionGoal
 @rosimport turtlebot_controller.msg.TurtleBotMovementActionResult
+@rosimport std_srvs.srv.Empty
 rostypegen()
 import geometry_msgs.msg: Twist
 import turtlebot_controller.msg: TurtleBotMovementActionGoal, TurtleBotMovementActionResult
+import std_srvs.srv: Empty, EmptyRequest
 using Dates # for time-out checks
 
 init_node("pomdp_planner")
@@ -16,9 +18,19 @@ init_node("pomdp_planner")
 POLL_RATE = Rate(10.0)
 TIMEOUT = Dates.Millisecond(3000)
 
+gazebo_reset_service = ServiceProxy{Empty}("/gazebo/reset_world")
+rossleep(Duration(0.1)) # wait for service initialization
+
 while get_param("turtlebot_controller_action_server_ready", false) != true
     println("turtlebot_communication: Waiting for turtlebot_controller")
     rossleep(Duration(1.0))
+end
+
+function resetGazeboWorld()
+    request = EmptyRequest()
+    print("turtlebot_communication: resetting Gazebo world... ")
+    gazebo_reset_service(request)
+    println("Done!")
 end
 
 mutable struct ActionStatus
