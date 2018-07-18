@@ -7,6 +7,7 @@ find_package(catkin REQUIRED COMPONENTS
   message_generation
   message_runtime
   rospy
+  turtlebot_gazebo_room
 )
 
 ## http://ros.org/doc/api/catkin/html/user_guide/setup_dot_py.html

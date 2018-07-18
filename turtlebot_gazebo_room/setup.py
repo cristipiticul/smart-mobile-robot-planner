@@ -5,7 +5,7 @@ from catkin_pkg.python_setup import generate_distutils_setup
 
 # fetch values from package.xml
 setup_args = generate_distutils_setup(
-    packages=['interactive_local_planner_simulated_obstacle'],
+    packages=['turtlebot_gazebo_room'],
     package_dir={'': 'src'},
 )
 

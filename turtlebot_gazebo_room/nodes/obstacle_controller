@@ -1,0 +1,39 @@
+#!/usr/bin/env python
+import rospy
+from turtlebot_gazebo_room.moving_obstacle_controller import MovingObstacleController
+
+def main():
+    rospy.init_node('obstacle_controller')
+
+    model_name = rospy.get_param('~model_name')
+    initial_x = rospy.get_param('~initial_x')
+    initial_y = rospy.get_param('~initial_y')
+    initial_z = rospy.get_param('~initial_z')
+    direction = rospy.get_param('~direction')
+    if direction != 'left' and direction != 'right':
+        rospy.logerr('obstacle_controller: Initial direction unknown: %s' % direction)
+        return -1
+    min_y = rospy.get_param('~min_y')
+    max_y = rospy.get_param('~max_y')
+    velocity = rospy.get_param('~velocity')
+    cell_size = rospy.get_param('~cell_size')
+
+    rospy.loginfo('obstacle_controller: Model name: %s' % model_name)
+    rospy.loginfo('obstacle_controller: Initial X: %f' % initial_x)
+    rospy.loginfo('obstacle_controller: Initial Y: %f' % initial_y)
+    rospy.loginfo('obstacle_controller: Initial Z: %f' % initial_z)
+    rospy.loginfo('obstacle_controller: Direction: %s' % direction)
+    rospy.loginfo('obstacle_controller: Min Y: %f' % min_y)
+    rospy.loginfo('obstacle_controller: Max Y: %f' % max_y)
+    rospy.loginfo('obstacle_controller: Velocity: %f' % velocity)
+    rospy.loginfo('obstacle_controller: Cell size: %f' % cell_size)
+
+    controller = MovingObstacleController(model_name, initial_x, initial_y, initial_z,
+        direction, min_y, max_y, velocity, cell_size)
+
+    rospy.spin()
+
+    return 0
+
+if __name__ == '__main__':
+    main()

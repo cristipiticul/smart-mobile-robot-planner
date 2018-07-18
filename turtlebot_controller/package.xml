@@ -13,13 +13,16 @@
   <build_depend>geometry_msgs</build_depend>
   <build_depend>message_generation</build_depend>
   <build_depend>rospy</build_depend>
+  <build_depend>turtlebot_gazebo_room</build_depend>
   <build_export_depend>actionlib</build_export_depend>
   <build_export_depend>geometry_msgs</build_export_depend>
   <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>turtlebot_gazebo_room</build_export_depend>
   <exec_depend>actionlib</exec_depend>
   <exec_depend>geometry_msgs</exec_depend>
   <exec_depend>message_runtime</exec_depend>
   <exec_depend>rospy</exec_depend>
+  <exec_depend>turtlebot_gazebo_room</exec_depend>
 
   <export>
   </export>

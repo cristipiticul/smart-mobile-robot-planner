@@ -1,32 +1,29 @@
 <launch>
-  <arg name="moving_obstacle_model_name" value="moving_obstacle"/>
-  <node name="moving_obstacle_spawner" pkg="gazebo_ros" type="spawn_model" output="screen"
-    args="-file $(find interactive_local_planner_simulated_obstacle)/models/moving_obstacle/model.sdf -sdf -x 1.0 -y 0 -z 0.3 -Y 1.5757 -model $(arg moving_obstacle_model_name)" />
-  
-  <node name="obstacle_controller" pkg="interactive_local_planner_simulated_obstacle"
-    type="obstacle_controller.py" output="screen">
-    <!-- The obstacle moves if the robot gets closer than this. -->
-    <param name="distance_threshold" value="0.6"/>
-    <!-- The distance between robot and obstacle is determined using these links -->
-    <param name="robot_link" value="mobile_base::base_footprint"/>
-    <param name="obstacle_link" value="$(arg moving_obstacle_model_name)::chassis"/>
-    <!-- Which joints to move when the robot gets close -->
-    <param name="joints_to_move" value='["$(arg moving_obstacle_model_name)::left_wheel_hinge", "$(arg moving_obstacle_model_name)::right_wheel_hinge"]'/>
+  <arg name="cell_size"/>
 
-    <!-- The obstacle_link's position will be published to TF -->
-    <param name="robot_tf_frame" value="base_footprint"/> <!-- Must match robot_link param -->
-    <param name="published_tf_frame" value="ar_marker_11"/>
-  </node>
+  <arg name="obstacle_1_model_name" value="obstacle_1"/>
+  <arg name="obstacle_1_initial_x" value="3.0"/>
+  <arg name="obstacle_1_initial_y" value="1.0"/>
+  <arg name="obstacle_1_initial_z" value="0.2"/>
+  <arg name="obstacle_1_is_going_right" value="true"/>
 
-  <arg name="static_obstacle_model_name" value="static_obstacle"/>
-  <node name="static_obstacle_spawner" pkg="gazebo_ros" type="spawn_model" output="screen"
-    args="-file $(find interactive_local_planner_simulated_obstacle)/models/moving_obstacle/model.sdf -sdf -x 2.0 -y 0 -z 0.3 -Y 1.5757 -model $(arg static_obstacle_model_name)" />
-  <node name="static_obstacle_tf_publisher" pkg="interactive_local_planner_simulated_obstacle"
-    type="static_obstacle_tf_publisher.py" output="screen">
-    <param name="robot_link" value="mobile_base::base_footprint"/>
-    <param name="obstacle_link" value="$(arg static_obstacle_model_name)::chassis"/>
-    <!-- The obstacle_link's position will be published to TF -->
-    <param name="robot_tf_frame" value="base_footprint"/> <!-- Must match robot_link param -->
-    <param name="published_tf_frame" value="ar_marker_12"/>
+  <arg     if="$(arg obstacle_1_is_going_right)" name="obstacle_1_initial_yaw" value="-1.5757"/>
+  <arg unless="$(arg obstacle_1_is_going_right)" name="obstacle_1_initial_yaw" value="+1.5757"/>
+
+  <node name="obstacle_1_spawner" pkg="gazebo_ros" type="spawn_model" output="screen"
+    args="-file $(find turtlebot_gazebo_room)/models/moving_obstacle/model.sdf -sdf -x $(arg obstacle_1_initial_x) -y $(arg obstacle_1_initial_y) -z $(arg obstacle_1_initial_z) -Y $(arg obstacle_1_initial_yaw) -model $(arg obstacle_1_model_name)" />
+
+  <node name="obstacle_1_controller" pkg="turtlebot_gazebo_room"
+    type="obstacle_controller" output="screen">
+    <param name="model_name" value="$(arg obstacle_1_model_name)"/>
+    <param name="initial_x" value="$(arg obstacle_1_initial_x)"/>
+    <param name="initial_y" value="$(arg obstacle_1_initial_y)"/>
+    <param name="initial_z" value="$(arg obstacle_1_initial_z)"/>
+    <param name="direction" value="right"     if="$(arg obstacle_1_is_going_right)"/>
+    <param name="direction" value="left"  unless="$(arg obstacle_1_is_going_right)"/>
+    <param name="min_y" value="1.0"/>
+    <param name="max_y" value="5.0"/>
+    <param name="velocity" value="1.0"/>
+    <param name="cell_size" value="$(arg cell_size)"/>
   </node>
 </launch>

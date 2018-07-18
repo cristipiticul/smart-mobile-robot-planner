@@ -21,6 +21,6 @@ include_directories(
 )
 
 catkin_install_python(
-  PROGRAMS nodes/obstacle_controller.py
+  PROGRAMS nodes/obstacle_controller
   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
 )

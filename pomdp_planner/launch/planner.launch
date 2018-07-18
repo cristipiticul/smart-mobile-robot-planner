@@ -14,4 +14,9 @@
     type="controller_node" output="screen">
     <param name="cell_size" value="$(arg cell_size)" />
   </node>
+
+  <!-- Obstacles -->
+  <include file="$(find turtlebot_gazebo_room)/launch/spawn_obstacles.launch">
+    <arg name="cell_size" value="$(arg cell_size)"/>
+  </include>
 </launch>
