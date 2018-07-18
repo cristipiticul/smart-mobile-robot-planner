@@ -6,7 +6,7 @@
   <arg name="initial_y"/>
   <arg name="initial_z" value="0.2"/>
   <arg name="is_going_right"/>
-  <arg name="velocity"/>
+  <arg name="velocity"/> <!-- Value measured in cells/sec -->
 
   <arg     if="$(arg is_going_right)" name="initial_yaw" value="-1.5757"/>
   <arg unless="$(arg is_going_right)" name="initial_yaw" value="+1.5757"/>
