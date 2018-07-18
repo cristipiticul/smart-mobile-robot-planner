@@ -19,24 +19,24 @@ class MovingObstacleController:
         self._cell_size = cell_size
 
         self._orientations = {
-            'left': angleToQuaternion(math.pi / 2),
-            'right': angleToQuaternion(-math.pi / 2)
+            'south': angleToQuaternion(math.pi / 2),
+            'north': angleToQuaternion(-math.pi / 2)
         }
 
         self._timer = rospy.Timer(rospy.Duration(1.0 / velocity), self.move)
 
     # Move 1 cell forward, or turn if at min_y/max_y
     def move(self, event):
-        if self._direction == 'left':
+        if self._direction == 'south':
             if self._y >= self._min_y:
                 self._y -= self._cell_size
             else: # turn around
-                self._direction = 'right'
+                self._direction = 'north'
         else:
             if self._y <= self._max_y:
                 self._y += self._cell_size
             else: # turn around
-                self._direction = 'left'
+                self._direction = 'south'
         return self.update_gazebo_pose()
 
     def update_gazebo_pose(self):

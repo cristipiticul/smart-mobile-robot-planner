@@ -24,7 +24,7 @@ class GazeboInterface:
         request.relative_entity_name = self._world_link
         response = self._get_model_state_service.call(request)
         if not response.success:
-            rospy.logerr('Problem when getting pose between %s and %s. Details: %s' % (self._world_link, self._robot_link, response.status_message))
+            rospy.logwarn('Problem when getting pose between %s and %s. Details: %s' % (self._world_link, self._model_name, response.status_message))
             return None
         return response.pose
 
@@ -50,6 +50,6 @@ class GazeboInterface:
         request.model_state.reference_frame = '' # self._world_link makes it relative
         response = self._set_model_state_service(request)
         if not response.success:
-            rospy.logerr('Problem when changing pose of model %s. Details: %s' % (model_name, response.status_message))
+            rospy.logwarn('Problem when changing pose of model %s. Details: %s' % (self._model_name, response.status_message))
             return False
         return True

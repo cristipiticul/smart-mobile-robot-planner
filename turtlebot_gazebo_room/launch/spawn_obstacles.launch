@@ -5,7 +5,7 @@
     <arg name="model_name" value="obstacle_1"/>
     <arg name="initial_x" value="3.0"/>
     <arg name="initial_y" value="1.0"/>
-    <arg name="is_going_right" value="true"/>
+    <arg name="is_going_north" value="true"/>
     <arg name="velocity" value="1.0"/>
     <arg name="cell_size" value="$(arg cell_size)"/>
   </include>
@@ -14,7 +14,7 @@
     <arg name="model_name" value="obstacle_2"/>
     <arg name="initial_x" value="4.0"/>
     <arg name="initial_y" value="5.0"/>
-    <arg name="is_going_right" value="false"/>
+    <arg name="is_going_north" value="false"/>
     <arg name="velocity" value="2.0"/>
     <arg name="cell_size" value="$(arg cell_size)"/>
   </include>

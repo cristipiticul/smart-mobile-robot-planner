@@ -10,7 +10,7 @@ def main():
     initial_y = rospy.get_param('~initial_y')
     initial_z = rospy.get_param('~initial_z')
     direction = rospy.get_param('~direction')
-    if direction != 'left' and direction != 'right':
+    if direction != 'north' and direction != 'south':
         rospy.logerr('obstacle_controller: Initial direction unknown: %s' % direction)
         return -1
     min_y = rospy.get_param('~min_y')
