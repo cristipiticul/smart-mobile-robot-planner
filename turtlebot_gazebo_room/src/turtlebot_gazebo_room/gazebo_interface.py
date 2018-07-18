@@ -49,7 +49,6 @@ class GazeboInterface:
         request.model_state.pose.orientation = orientation
         request.model_state.reference_frame = '' # self._world_link makes it relative
         response = self._set_model_state_service(request)
-        print(str(request))
         if not response.success:
             rospy.logerr('Problem when changing pose of model %s. Details: %s' % (model_name, response.status_message))
             return False
