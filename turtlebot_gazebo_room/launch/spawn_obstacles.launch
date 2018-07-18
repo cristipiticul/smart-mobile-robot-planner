@@ -1,29 +1,21 @@
 <launch>
   <arg name="cell_size"/>
 
-  <arg name="obstacle_1_model_name" value="obstacle_1"/>
-  <arg name="obstacle_1_initial_x" value="3.0"/>
-  <arg name="obstacle_1_initial_y" value="1.0"/>
-  <arg name="obstacle_1_initial_z" value="0.2"/>
-  <arg name="obstacle_1_is_going_right" value="true"/>
+  <include file="$(find turtlebot_gazebo_room)/launch/includes/spawn_obstacle.launch.xml">
+    <arg name="model_name" value="obstacle_1"/>
+    <arg name="initial_x" value="3.0"/>
+    <arg name="initial_y" value="1.0"/>
+    <arg name="is_going_right" value="true"/>
+    <arg name="velocity" value="1.0"/>
+    <arg name="cell_size" value="$(arg cell_size)"/>
+  </include>
 
-  <arg     if="$(arg obstacle_1_is_going_right)" name="obstacle_1_initial_yaw" value="-1.5757"/>
-  <arg unless="$(arg obstacle_1_is_going_right)" name="obstacle_1_initial_yaw" value="+1.5757"/>
-
-  <node name="obstacle_1_spawner" pkg="gazebo_ros" type="spawn_model" output="screen"
-    args="-file $(find turtlebot_gazebo_room)/models/moving_obstacle/model.sdf -sdf -x $(arg obstacle_1_initial_x) -y $(arg obstacle_1_initial_y) -z $(arg obstacle_1_initial_z) -Y $(arg obstacle_1_initial_yaw) -model $(arg obstacle_1_model_name)" />
-
-  <node name="obstacle_1_controller" pkg="turtlebot_gazebo_room"
-    type="obstacle_controller" output="screen">
-    <param name="model_name" value="$(arg obstacle_1_model_name)"/>
-    <param name="initial_x" value="$(arg obstacle_1_initial_x)"/>
-    <param name="initial_y" value="$(arg obstacle_1_initial_y)"/>
-    <param name="initial_z" value="$(arg obstacle_1_initial_z)"/>
-    <param name="direction" value="right"     if="$(arg obstacle_1_is_going_right)"/>
-    <param name="direction" value="left"  unless="$(arg obstacle_1_is_going_right)"/>
-    <param name="min_y" value="1.0"/>
-    <param name="max_y" value="5.0"/>
-    <param name="velocity" value="1.0"/>
-    <param name="cell_size" value="$(arg cell_size)"/>
-  </node>
+  <include file="$(find turtlebot_gazebo_room)/launch/includes/spawn_obstacle.launch.xml">
+    <arg name="model_name" value="obstacle_2"/>
+    <arg name="initial_x" value="4.0"/>
+    <arg name="initial_y" value="5.0"/>
+    <arg name="is_going_right" value="false"/>
+    <arg name="velocity" value="2.0"/>
+    <arg name="cell_size" value="$(arg cell_size)"/>
+  </include>
 </launch>

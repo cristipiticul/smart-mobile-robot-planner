@@ -1,0 +1,30 @@
+<launch>
+  <arg name="cell_size"/>
+
+  <arg name="model_name"/>
+  <arg name="initial_x"/>
+  <arg name="initial_y"/>
+  <arg name="initial_z" value="0.2"/>
+  <arg name="is_going_right"/>
+  <arg name="velocity"/>
+
+  <arg     if="$(arg is_going_right)" name="initial_yaw" value="-1.5757"/>
+  <arg unless="$(arg is_going_right)" name="initial_yaw" value="+1.5757"/>
+
+  <node name="$(arg model_name)_spawner" pkg="gazebo_ros" type="spawn_model" output="screen"
+    args="-file $(find turtlebot_gazebo_room)/models/moving_obstacle/model.sdf -sdf -x $(arg initial_x) -y $(arg initial_y) -z $(arg initial_z) -Y $(arg initial_yaw) -model $(arg model_name)" />
+
+  <node name="$(arg model_name)_controller" pkg="turtlebot_gazebo_room"
+    type="obstacle_controller" output="screen">
+    <param name="model_name" value="$(arg model_name)"/>
+    <param name="initial_x" value="$(arg initial_x)"/>
+    <param name="initial_y" value="$(arg initial_y)"/>
+    <param name="initial_z" value="$(arg initial_z)"/>
+    <param name="direction" value="right"     if="$(arg is_going_right)"/>
+    <param name="direction" value="left"  unless="$(arg is_going_right)"/>
+    <param name="min_y" value="1.0"/>
+    <param name="max_y" value="5.0"/>
+    <param name="velocity" value="$(arg velocity)"/>
+    <param name="cell_size" value="$(arg cell_size)"/>
+  </node>
+</launch>
