@@ -13,14 +13,14 @@ struct GridCell
     y::Int64
 end
 
-# abstract type AgentState end
+abstract type AgentState end
 
-struct RobotState # <: AgentState
+struct RobotState <: AgentState
     position::GridCell
     orientation::Symbol # one of [:north, :south, :east, :west]
 end
 
-struct ObstacleState # <: AgentState
+struct ObstacleState <: AgentState
     position::GridCell
     orientation::Symbol # one of [:north, :south]
 end
@@ -28,6 +28,15 @@ end
 struct GridWorldState
     robot::RobotState
     obstacles::Vector{ObstacleState}
+end
+
+Base.show(io::IO, a::AgentState) = print(io, "(", a.position.x, ", ", a.position.y, ", ", a.orientation, ')')
+function Base.show(io::IO, s::GridWorldState)
+    println(io, "robot: ", s.robot)
+    println(io, "obstacles:")
+    for obstacle = s.obstacles
+        println(io, "       ", obstacle)
+    end
 end
 
 type GridWorld <: MDP{GridWorldState, Symbol} # Note that our MDP is parametarized by the state and the action
@@ -158,9 +167,9 @@ function POMDPs.transition(mdp::GridWorld, state::GridWorldState, action::Symbol
 end
 
 function POMDPs.reward(mdp::GridWorld, state::GridWorldState, action::Symbol, statep::GridWorldState)
-    if stateInCollision(state)
+    if stateInCollision(statep) # if we use state instead of statep, this cost is never reached (no transition from a terminal state)
         return mdp.collision_reward
-    elseif goalIsReached(mdp, state)
+    elseif goalIsReached(mdp, statep)
         return mdp.goal_reward
     else
         return mdp.time_reward
@@ -249,14 +258,21 @@ start_state = GridWorldState(
         ObstacleState(GridCell(mdp.obstacle_2_x, 6), :south)
     ]
 )
+initial_state(mdp::GridWorld, rng::AbstractRNG) = start_state
 
-sim(mdp, start_state, max_steps=20) do s
-    println("State: $s")
+hr = HistoryRecorder(max_steps=20)
+
+history = simulate(hr, mdp, policy)
+for (s, a, r, sp) in eachstep(history, "(s, a, r, sp)")
+    print("$s")
     a = action(policy, s)
     println("Action: $a")
+    println("Reward: $r")
+    println()
     #if !robotDoAction(a)
     #    println("Robot failed to do action: $a")
     #    return :wait
     #end
-    return a
 end
+println("Discounted reward: ", discounted_reward(history))
+println("Undiscounted reward: ", undiscounted_reward(history))
